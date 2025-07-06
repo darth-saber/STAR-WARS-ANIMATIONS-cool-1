@@ -36,17 +36,22 @@
     }
 
     .glow-purple {
-      box-shadow: 0 0 30px 10px rgba(183, 0, 255, 0.9), 0 0 60px 20px rgba(183, 0, 255, 0.6);
+      box-shadow: 0 0 40px 15px rgba(183, 0, 255, 1), 0 0 80px 30px rgba(183, 0, 255, 0.8);
     }
 
     .glow-red {
-      box-shadow: 0 0 30px 10px rgba(255, 0, 0, 0.9), 0 0 60px 20px rgba(255, 0, 0, 0.6);
+      box-shadow: 0 0 40px 15px rgba(255, 0, 0, 1), 0 0 80px 30px rgba(255, 0, 0, 0.8);
     }
 
     .glow-blue {
-      box-shadow: 0 0 30px 10px rgba(0, 0, 255, 0.9), 0 0 60px 20px rgba(0, 0, 255, 0.6);
+      box-shadow: 0 0 40px 15px rgba(0, 0, 255, 1), 0 0 80px 30px rgba(0, 0, 255, 0.8);
     }
-
+    .glow-gold {
+      box-shadow: 0 0 40px 15px rgb(231, 234, 39), 0 0 80px 30px rgba(224, 237, 45, 0.8);
+    }
+    .glow-green {
+      box-shadow: 0 0 40px 15px rgb(11, 124, 34), 0 0 80px 30px rgba(49, 111, 55, 0.8);
+    }
     .crawl-container {
       position: absolute;
       bottom: 0;
@@ -128,15 +133,15 @@
   <img id="tieFighter" src="image/vaders-tie-fighter.jpeg" alt="TIE Fighter" />
 
   <!-- Character images -->
-  <img class="character glow-purple" id="finnWindu" src="image/Finn_Windu_AKA_Jedi_Solis.png" alt="Finn Windu" style="top: 10%; left: 10%; opacity: 0;" />
-  <img class="character glow-red" id="darthNightmare" src="image/Darth_Nightmare.jpeg" alt="Darth Nightmare" style="bottom: 10%; left: 25%; opacity: 0;" />
-  <img class="character glow-red" id="darthPaul" src="image/Darth_Paul.jpeg" alt="Darth Paul" style="top: 25%; right: 15%; opacity: 0;" />
-  <img class="character glow-blue" id="brandonWindu" src="image/Brandon_Windu_AKA_Jedi_Azarik.png" alt="Brandon Windu" style="top: 50%; right: 35%; opacity: 0;" />
-  <img class="character glow-red" id="deathOfRome" src="image/Death_of_Rome.jpeg" alt="Death Of Rome" style="top: 60%; left: 20%; opacity: 0;" />
-  <img class="character glow-red" id="bigKnight" src="image/Big_Knight.jpeg" alt="Big Knight" style="top: 40%; left: 40%; opacity: 0;" />
-  <img class="character glow-red" id="bommer" src="image/Boomer.jpeg" alt="Bommer" style="top: 30%; left: 60%; opacity: 0;" />
-  <img class="character glow-red" id="darthRen" src="image/Darth_Ren_Son.jpeg" alt="Darth Ren" style="top: 20%; right: 40%; opacity: 0;" />
-  <img class="character glow-purple" id="jaydenWindu" src="image/Sith_Jayden_Windu.png" alt="Jayden Windu" style="top: 15%; right: 10%; opacity: 0;" />
+  <img class="character glow-blue" id="finnWindu" src="image/Finn_Windu_ AKA Jedi Solis.png" alt="Finn Windu" style="top: 3%; left: 3%; opacity: 1;" />
+  <img class="character glow-red" id="darthNightmare" src="image/Darth Nightmare.jpeg" alt="Darth Nightmare" style="bottom: 3%; left: 10%; opacity: 1;" />
+  <img class="character glow-red" id="darthPaul" src="image/Darth Paul jpeg.jpeg" alt="Darth Paul" style="top: 15%; right: 3%; opacity: 1;" />
+  <img class="character glow-blue" id="brandonWindu" src="image/Brandon_Windu AKA Jedi Azarik.png" alt="Brandon Windu" style="top: 60%; right: 60%; opacity: 1;" />
+  <img class="character glow-gold" id="deathOfRome" src="image/Death of Rome.jpeg" alt="Death Of Rome" style="top: 70%; left: 5%; opacity: 1;" />
+  <img class="character glow-purple" id="bigKnight" src="image/Big knight.jpeg" alt="Big Knight" style="top: 50%; left: 60%; opacity: 1;" />
+  <img class="character glow-green" id="boomer" src="image/Boomer.jpeg" alt="Boomer" style="top: 40%; left: 80%; opacity: 1;" />
+  <img class="character glow-red" id="darthRen" src="image/Darth Ren son.jpeg" alt="Darth Ren" style="top: 30%; right: 70%; opacity: 1;" />
+  <img class="character glow-purple" id="jaydenWindu" src="image/ Sith Jayden_Windu .png" alt="Jayden Windu" style="top: 5%; right: 30%; opacity: 1;" />
 
   <div class="crawl-container">
     <div class="crawl-text">
@@ -182,6 +187,16 @@
     }, delay);
   }
 
+  function hideCharacter(id, delay = 0) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.transition = 'opacity 2s ease-in-out';
+        el.style.opacity = 0;
+      }
+    }, delay);
+  }
+
   function startAllAnimations() {
     startButton.style.display = 'none';
     mainContent.style.display = 'flex';
@@ -189,10 +204,14 @@
     audio.play().catch(error => console.warn('Audio playback failed:', error));
     setInterval(launchTIEFighter, 15000);
 
-    showCharacter('finnWindu', 1000);
-    showCharacter('darthNightmare', 3000);
-    showCharacter('jaydenWindu', 5000);
-    showCharacter('brandonWindu', 7000);
+    // Hide characters one at a time starting after 5 seconds, 1.5s apart
+    const hideDelayStart = 5000;
+    const hideInterval = 1500;
+    const charactersToHide = ['finnWindu', 'darthNightmare', 'darthPaul', 'jaydenWindu', 'brandonWindu', 'deathOfRome', 'bigKnight', 'boomer', 'darthRen'];
+
+    charactersToHide.forEach((id, index) => {
+      hideCharacter(id, hideDelayStart + index * hideInterval);
+    });
 
     startHyperspace();
   }

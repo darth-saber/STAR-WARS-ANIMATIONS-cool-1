@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enhanced Star Wars Animation with Hyperspace</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/star-jedi" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+      color: #ffe81f;
+      cursor: url('https://cur.cursors-4u.net/symbols/sym-7/sym617.cur'), auto;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .character {
+      position: absolute;
+      max-width: 250px;
+      height: auto;
+      border-radius: 1rem;
+      will-change: transform;
+    }
+
+    .glow-purple {
+      box-shadow: 0 0 30px 10px rgba(183, 0, 255, 0.9), 0 0 60px 20px rgba(183, 0, 255, 0.6);
+    }
+
+    .glow-red {
+      box-shadow: 0 0 30px 10px rgba(255, 0, 0, 0.9), 0 0 60px 20px rgba(255, 0, 0, 0.6);
+    }
+
+    .glow-blue {
+      box-shadow: 0 0 30px 10px rgba(0, 0, 255, 0.9), 0 0 60px 20px rgba(0, 0, 255, 0.6);
+    }
+
+    .crawl-container {
+      position: absolute;
+      bottom: 0;
+      width: 80%;
+      max-width: 800px;
+      height: 50%;
+      overflow: hidden;
+      perspective: 300px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .crawl-text {
+      position: absolute;
+      font-family: 'Star Jedi', 'Inter', sans-serif;
+      font-size: 1.5rem;
+      line-height: 1.5;
+      text-align: justify;
+      transform-origin: 50% 100%;
+      animation: crawl 60s linear infinite;
+      color: #ffe81f;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    @keyframes crawl {
+      0% { top: 100%; transform: rotateX(20deg) scale(1); opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: -200%; transform: rotateX(25deg) scale(0.5); opacity: 0; }
+    }
+
+    canvas#starfield, canvas#hyperspace {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    #tieFighter {
+      position: absolute;
+      top: 10%;
+      left: -100px;
+      width: 100px;
+      transition: transform 6s linear;
+      z-index: 5;
+    }
+
+    #startButton {
+      background-color: #ffe81f;
+      color: #000;
+      font-family: 'Star Jedi', sans-serif;
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 20px rgba(255, 232, 31, 0.7);
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    #startButton:hover {
+      background-color: #f0d81a;
+      box-shadow: 0 0 30px rgba(255, 232, 31, 0.9);
+      transform: scale(1.05);
+    }
+
+    .hidden-content {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<canvas id="hyperspace"></canvas>
+
+<div class="container" id="mainContent" style="display: none;">
+  <img id="tieFighter" src="image/vaders-tie-fighter.jpeg" alt="TIE Fighter" />
+
+  <!-- Character images -->
+  <img class="character glow-purple" id="finnWindu" src="image/Finn_Windu_AKA_Jedi_Solis.png" alt="Finn Windu" style="top: 10%; left: 10%; opacity: 0;" />
+  <img class="character glow-red" id="darthNightmare" src="image/Darth_Nightmare.jpeg" alt="Darth Nightmare" style="bottom: 10%; left: 25%; opacity: 0;" />
+  <img class="character glow-red" id="darthPaul" src="image/Darth_Paul.jpeg" alt="Darth Paul" style="top: 25%; right: 15%; opacity: 0;" />
+  <img class="character glow-blue" id="brandonWindu" src="image/Brandon_Windu_AKA_Jedi_Azarik.png" alt="Brandon Windu" style="top: 50%; right: 35%; opacity: 0;" />
+  <img class="character glow-red" id="deathOfRome" src="image/Death_of_Rome.jpeg" alt="Death Of Rome" style="top: 60%; left: 20%; opacity: 0;" />
+  <img class="character glow-red" id="bigKnight" src="image/Big_Knight.jpeg" alt="Big Knight" style="top: 40%; left: 40%; opacity: 0;" />
+  <img class="character glow-red" id="bommer" src="image/Boomer.jpeg" alt="Bommer" style="top: 30%; left: 60%; opacity: 0;" />
+  <img class="character glow-red" id="darthRen" src="image/Darth_Ren_Son.jpeg" alt="Darth Ren" style="top: 20%; right: 40%; opacity: 0;" />
+  <img class="character glow-purple" id="jaydenWindu" src="image/Sith_Jayden_Windu.png" alt="Jayden Windu" style="top: 15%; right: 10%; opacity: 0;" />
+
+  <div class="crawl-container">
+    <div class="crawl-text">
+      A long time ago in a galaxy far, far away....<br /><br />
+      It is a period of civil war. Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire...
+    </div>
+  </div>
+</div>
+
+<button id="startButton">Start Star Wars Animation</button>
+
+<audio id="starWarsAudio" src="https://actions.google.com/sounds/v1/movies/star_wars_theme.ogg" loop></audio>
+<audio id="saberSound" src="https://freesound.org/data/previews/341/341695_3248244-lq.mp3"></audio>
+<audio id="flybySound" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+
+<script>
+  const audio = document.getElementById('starWarsAudio');
+  const saber = document.getElementById('saberSound');
+  const flyby = document.getElementById('flybySound');
+  const tieFighter = document.getElementById('tieFighter');
+  const startButton = document.getElementById('startButton');
+  const mainContent = document.getElementById('mainContent');
+
+  function launchTIEFighter() {
+    tieFighter.style.transform = 'translateX(120vw)';
+    flyby.currentTime = 0;
+    flyby.play().catch(error => console.warn('Flyby audio playback failed:', error));
+    setTimeout(() => {
+      tieFighter.style.transition = 'none';
+      tieFighter.style.transform = 'translateX(0)';
+      void tieFighter.offsetWidth;
+      tieFighter.style.transition = 'transform 6s linear';
+    }, 7000);
+  }
+
+  function showCharacter(id, delay = 0) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.transition = 'opacity 2s ease-in-out';
+        el.style.opacity = 1;
+      }
+    }, delay);
+  }
+
+  function startAllAnimations() {
+    startButton.style.display = 'none';
+    mainContent.style.display = 'flex';
+
+    audio.play().catch(error => console.warn('Audio playback failed:', error));
+    setInterval(launchTIEFighter, 15000);
+
+    showCharacter('finnWindu', 1000);
+    showCharacter('darthNightmare', 3000);
+    showCharacter('jaydenWindu', 5000);
+    showCharacter('brandonWindu', 7000);
+
+    startHyperspace();
+  }
+
+  window.onload = function () {
+    resizeCanvas();
+    startButton.addEventListener('click', startAllAnimations);
+    mainContent.style.display = 'none';
+  };
+
+  const starCanvas = document.getElementById('starfield');
+  const starCtx = starCanvas.getContext('2d');
+  let stars = [];
+
+  function resizeCanvas() {
+    starCanvas.width = window.innerWidth;
+    starCanvas.height = window.innerHeight;
+    const hyperCanvas = document.getElementById('hyperspace');
+    hyperCanvas.width = window.innerWidth;
+    hyperCanvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      radius: Math.random() * 1.5,
+      speed: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function drawStars() {
+    starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+    starCtx.fillStyle = '#fff';
+    for (let star of stars) {
+      starCtx.beginPath();
+      starCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      starCtx.fill();
+      star.y += star.speed;
+      if (star.y > starCanvas.height) {
+        star.y = 0;
+        star.x = Math.random() * starCanvas.width;
+      }
+    }
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  const hyperCanvas = document.getElementById('hyperspace');
+  const hyperCtx = hyperCanvas.getContext('2d');
+  let hyperStars = [];
+
+  for (let i = 0; i < 100; i++) {
+    hyperStars.push({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      dx: (Math.random() - 0.5) * 2,
+      dy: (Math.random() - 0.5) * 2,
+      length: Math.random() * 20 + 10
+    });
+  }
+
+  function drawHyperspace() {
+    hyperCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    hyperCtx.fillRect(0, 0, hyperCanvas.width, hyperCanvas.height);
+    hyperCtx.strokeStyle = '#00f6ff';
+    for (let star of hyperStars) {
+      hyperCtx.beginPath();
+      hyperCtx.moveTo(star.x, star.y);
+      star.x += star.dx * 10;
+      star.y += star.dy * 10;
+      hyperCtx.lineTo(star.x, star.y);
+      hyperCtx.stroke();
+      if (star.x < 0 || star.x > hyperCanvas.width || star.y < 0 || star.y > hyperCanvas.height) {
+        star.x = window.innerWidth / 2;
+        star.y = window.innerHeight / 2;
+      }
+    }
+    requestAnimationFrame(drawHyperspace);
+  }
+
+  function startHyperspace() {
+    setTimeout(drawHyperspace, 10000);
+  }
+</script>
+</body>
+</html>
